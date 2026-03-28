@@ -126,7 +126,7 @@ class Newcomers(commands.Cog):
                 pass
         else:
             if is_probation:
-                await newcomers.send(f'{ctx.author.mention}, please run this command again with a brief message '
+                await probation.send(f'{ctx.author.mention}, please run this command again with a brief message '
                                  'explaining your situation (e.g., `.ready hey guys, i was '
                                  'having trouble hacking my console`). **Copying and pasting '
                                  'the example will not remove your probation.**', delete_after=10)
