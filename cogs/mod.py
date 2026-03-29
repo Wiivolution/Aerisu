@@ -918,6 +918,34 @@ class Mod(commands.GroupCog):
     @is_staff("Moderator")
     @commands.bot_has_permissions(manage_roles=True)
     @commands.guild_only()
+    @commands.command(name="temprole", aliases=["temporaryrole", "trole"])
+    async def temprole_command(self, ctx: GuildContext, member: discord.Member, role: discord.Role, length: str = "", *, reason: Optional[str]):
+        """Give a temporary role to a member. Lasts 24 hours by default."""
+
+        timestamp = datetime.now(self.bot.tz)
+        seconds = parse_time(length) if length else 86400 # 24 hours
+        if seconds == -1:
+            return await ctx.send("💢 I don't understand your time format.")
+            
+        await member.add_roles(role)
+
+        delta = timedelta(seconds=seconds)
+        expiring_time = timestamp + delta
+        expiring_time_string = format_dt(expiring_time)
+
+        if self.extras.timed_roles.get((member.id, role.id)):
+            await self.extras.delete_timed_role(member.id, role.id)
+
+        res = await self.extras.add_timed_role(member, role, expiring_time)
+        if not res:
+            return await ctx.send("Failed to add temporary role.")
+        await ctx.send(f"{member.mention} has been temporarily assigned role {role.id} {expiring_time_string}.")
+        # will add a log for this later
+        #await self.logs.post_action_log(ctx.author, member, 'stream', reason=reason, until=expiring_time)
+
+    @is_staff("Moderator")
+    @commands.bot_has_permissions(manage_roles=True)
+    @commands.guild_only()
     @commands.command()
     async def verify(self, ctx: GuildContext, member: discord.Member, *, reason: Optional[str]):
         """Verifies a user to access the server."""
