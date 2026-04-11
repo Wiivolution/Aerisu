@@ -37,7 +37,7 @@ class VoteButton(Button['SimpleVoteView']):
 
     async def callback(self, interaction: Interaction):
         assert self.view is not None
-        if self.view.staff_only and not check_staff(interaction.client, 'Helper', interaction.user.id):
+        if self.view.staff_only and not check_staff(interaction.client, 'Moderator', interaction.user.id):
             await interaction.response.send_message("You aren't allowed to vote.", ephemeral=True)
             return
         await interaction.client.extras.add_vote(self.view.custom_id, interaction.user.id, self.label)

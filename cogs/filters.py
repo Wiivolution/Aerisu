@@ -28,7 +28,7 @@ class Filter(commands.Cog):
         self.filters = bot.filters
 
     # Command group for the word filter
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.group(aliases=['wf'])
     async def wordfilter(self, ctx: KurisuContext):
         """Command group for managing the word filter"""
@@ -177,7 +177,7 @@ class Filter(commands.Cog):
             await msg.edit(content="Deletion aborted.", view=None)
 
     # Command group for the levenshtein word filter
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.group(aliases=['xnoefilter', 'lfilter', 'lf'])
     async def levenshteinfilter(self, ctx: KurisuContext):
         """Command group for managing the levenshtein filter"""
@@ -305,7 +305,7 @@ class Filter(commands.Cog):
         else:
             await ctx.send("The whitelist is empty.")
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.group(aliases=['if'])
     async def invitefilter(self, ctx: KurisuContext):
         """Command group for managing the invite filter"""

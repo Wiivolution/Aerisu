@@ -91,7 +91,7 @@ class Assistance(commands.GroupCog):
     @commands.guild_only()
     @commands.command(aliases=["sr"])
     async def staffreq(self, ctx: GuildContext, *, msg_request: str = ""):
-        """Request staff, with optional additional text. Trusted, Helpers, Staff, Retired Staff, Verified only."""
+        """Request staff, with optional additional text."""
         author = ctx.author
         await ctx.message.delete()
         msg = f"❗️ **Assistance requested**: {ctx.channel.mention} by {author.mention} | {self.bot.escape_text(author)} @here"
@@ -106,11 +106,11 @@ class Assistance(commands.GroupCog):
         except discord.errors.Forbidden:
             pass
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.guild_only()
     @commands.command()
     async def createsmallhelp(self, ctx: GuildContext, console: Literal['3ds', 'switch', 'wiiu', 'wii', 'legacy'], helpee: discord.Member, *, desc: str):
-        """Creates a small help channel for a user. Helper+ only."""
+        """Creates a small help channel for a user. Moderator+ only."""
         if not self.small_help_category:
             return await ctx.send("The small help category is not set.")
         # Channel names can't be longer than 100 characters
@@ -232,25 +232,25 @@ class Assistance(commands.GroupCog):
         within_channel = ctx.channel == channel
         await ctx.send(f"You {'do not ' if not within_channel else ''}seem to be in {channel.mention}. Please take this subject {'there' if not within_channel else 'somewhere else'}.")
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.guild_only()
     @commands.command(hidden=True)
     async def dev(self, ctx: GuildContext):
-        """Reminds user where they are. Helper+ only"""
+        """Reminds user where they are. Moderator+ only"""
         await self.send_channel_warn(ctx, self.bot.channels['dev'])
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.guild_only()
     @commands.command(hidden=True)
     async def meta(self, ctx: GuildContext):
-        """Reminds user where they are. (2) Helper+ only"""
+        """Reminds user where they are. (2) Moderator+ only"""
         await self.send_channel_warn(ctx, self.bot.channels['meta'])
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.guild_only()
     @commands.command(hidden=True)
     async def ot(self, ctx: GuildContext):
-        """Reminds user where they are. (4) Helper+ only"""
+        """Reminds user where they are. (4) Moderator+ only"""
         await self.send_channel_warn(ctx, self.bot.channels['general'])
 
     @commands.guild_only()

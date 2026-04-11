@@ -70,7 +70,7 @@ class Events(commands.Cog):
                     await self.bot.close()
                 return
         await self.bot.wait_until_all_ready()
-        if message.author == message.guild.me or check_staff(self.bot, 'Helper', message.author.id) \
+        if message.author == message.guild.me or check_staff(self.bot, 'Moderator', message.author.id) \
                 or message.channel.id in self.bot.configuration.nofilter_list:
             return
         if db_chan := await self.bot.configuration.get_channel(message.channel.id):
@@ -115,7 +115,7 @@ class Events(commands.Cog):
         if message_after.guild is None or message_after.author.bot:
             return
         await self.bot.wait_until_all_ready()
-        if message_after.author == message_after.guild.me or check_staff(self.bot, 'Helper', message_after.author.id) \
+        if message_after.author == message_after.guild.me or check_staff(self.bot, 'Moderator', message_after.author.id) \
                 or message_after.channel.id in self.bot.configuration.nofilter_list:
             return
         if message_before.content == message_after.content:

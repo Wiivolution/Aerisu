@@ -24,7 +24,6 @@ class StaffRank(IntEnum):
     Moderator = 2
     HalfOP = 3
     Staff = 3
-    Helper = 4
 
 
 class KillBoxState(IntEnum):
@@ -61,8 +60,6 @@ class ConfigurationManager(BaseManager, db_manager=ConfigurationDatabaseManager)
 
         self._staff: dict[int, StaffRank] = {user_id: StaffRank[position] async for user_id, position in self.db.get_all_staff()}
 
-        self._helpers: dict[int, str] = {user_id: console async for user_id, console in self.db.get_all_helpers()}
-
         self._nofilter_list: list[int] = [c async for c in self.db.get_all_nofilter_channels()]
 
         self._rules: dict[int, Rule] = {rule.number: rule async for rule in self.db.get_rules()}
@@ -72,10 +69,6 @@ class ConfigurationManager(BaseManager, db_manager=ConfigurationDatabaseManager)
     @property
     def staff(self) -> dict[int, StaffRank]:
         return self._staff
-
-    @property
-    def helpers(self) -> dict[int, str]:
-        return self._helpers
 
     @property
     def auto_probation(self) -> bool:
@@ -117,7 +110,7 @@ class ConfigurationManager(BaseManager, db_manager=ConfigurationDatabaseManager)
     async def add_staff(self, user: 'Member | User | OptionalMember', level: str):
         if level not in self.bot.staff_roles:
             raise ValueError('not a staff level')
-        if self._staff.get(user.id) is not None or self._helpers.get(user.id) is not None:
+        if self._staff.get(user.id) is not None:
             res = await self.db.set_staff_level(user.id, level)
         else:
             res = await self.db.add_staff_member(user.id, level)
@@ -126,38 +119,9 @@ class ConfigurationManager(BaseManager, db_manager=ConfigurationDatabaseManager)
         return res
 
     async def delete_staff(self, user: 'Member | User | OptionalMember'):
-
-        if user.id in self._helpers:
-            res = await self.db.remove_staff_position(user.id)
-        else:
-            res = await self.db.delete_staff(user.id)
+        res = await self.db.delete_staff(user.id)
         if res:
             del self._staff[user.id]
-        return res
-
-    async def add_helper(self, user: 'Member | User | OptionalMember', console: str):
-        if console not in self.bot.helper_roles:
-            raise ValueError('not a staff level')
-        if self._staff.get(user.id) is not None or self._helpers.get(user.id) is not None:
-            res = await self.db.set_helper_console(user.id, console)
-        else:
-            res = await self.db.add_helper(user.id, console)
-        if res:
-            if isinstance(user, Member):
-                await user.add_roles(self.bot.roles['Helpers'])
-            self._helpers[user.id] = console
-        return res
-
-    async def delete_helper(self, user: 'Member | User | OptionalMember'):
-
-        if user.id in self._staff:
-            res = await self.db.remove_helper_console(user.id)
-        else:
-            res = await self.db.delete_staff(user.id)
-        if res:
-            if isinstance(user, Member):
-                await user.remove_roles(self.bot.roles['Helpers'])
-            del self._helpers[user.id]
         return res
 
     async def update_staff_roles(self, member: Member):

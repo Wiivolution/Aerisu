@@ -82,21 +82,8 @@ class ConfigurationDatabaseManager(BaseDatabaseManager, tables=tables):
         await self.add_member(user_id)
         return await self._insert('staff', user_id=user_id, position=position)
 
-    async def add_helper(self, user_id: int, console: str):
-        await self.add_member(user_id)
-        return await self._insert('staff', user_id=user_id, position='Helper', console=console)
-
     async def set_staff_level(self, user_id: int, position: str):
         return await self._update('staff', {'position': position}, user_id=user_id)
-
-    async def set_helper_console(self, user_id: int, console: str):
-        return await self._update('staff', {'console': console}, user_id=user_id)
-
-    async def remove_staff_position(self, user_id: int):
-        return await self._update('staff', {'position': 'Helper'}, user_id=user_id)
-
-    async def remove_helper_console(self, user_id: int):
-        return await self._update('staff', {'console': None}, user_id=user_id)
 
     async def delete_staff(self, user_id: int):
         return await self._delete('staff', user_id=user_id)
@@ -106,12 +93,6 @@ class ConfigurationDatabaseManager(BaseDatabaseManager, tables=tables):
             async with conn.transaction():
                 async for snowflake, position, _ in conn.cursor("SELECT * FROM staff WHERE position != 'Helper'"):
                     yield snowflake, position
-
-    async def get_all_helpers(self) -> 'AsyncGenerator[Tuple[int, str], None]':
-        async with self.pool.acquire() as conn:
-            async with conn.transaction():
-                async for snowflake, _, console in conn.cursor("SELECT * FROM staff WHERE console IS NOT NULL"):
-                    yield snowflake, console
 
     async def add_channel(self, channel_id: int, name: str):
         return await self._insert('channels', id=channel_id, name=name)

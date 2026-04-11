@@ -28,7 +28,7 @@ class Modwatch(commands.Cog):
             raise commands.NoPrivateMessage()
         return True
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.command()
     async def watch(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
         """Adds a member to the watchlist."""
@@ -39,7 +39,7 @@ class Modwatch(commands.Cog):
         await ctx.send(f"{member.mention} is now being watched.")
         await self.logs.post_action_log(ctx.author, member, 'watch', reason=reason)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.command()
     async def unwatch(self, ctx: GuildContext, member: discord.Member | discord.User):
         """Removes a member from the watchlist."""
@@ -50,7 +50,7 @@ class Modwatch(commands.Cog):
         await ctx.send(f"{member.mention} is no longer being watched.")
         await self.logs.post_action_log(ctx.author, member, 'unwatch')
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.command()
     async def listwatch(self, ctx: GuildContext):
         """List the members in the watchlist."""

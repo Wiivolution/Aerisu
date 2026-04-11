@@ -50,11 +50,11 @@ class Soap(commands.Cog):
         self.soaps_category = category
         await ctx.send("Soaps category set.")
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.guild_only()
     @commands.command(aliases=["rinse"])
     async def deletesoap(self, ctx: GuildContext, channels: commands.Greedy[discord.TextChannel]):
-        """Deletes a :soap: help channel. helper+ only."""
+        """Deletes a :soap: help channel. Moderator+ only."""
         if not self.soaps_category:
             return await ctx.send("The soaps category is not set.")
         await ctx.send("Soaps are unavailable at this time.")

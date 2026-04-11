@@ -71,10 +71,10 @@ class Mod(commands.GroupCog):
             await ctx.send("👋 Restarting bot!")
             await self.bot.close()
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.command(aliases=['ui'])
     async def userinfo(self, ctx: GuildContext, u: discord.Member | discord.User):
-        """Shows information from a user. Staff and Helpers only."""
+        """Shows information from a user. Staff only."""
         basemsg = f"name = {u.name}\nid = {u.id}\ndiscriminator = {u.discriminator}\navatar = <{u.avatar}>\nbot = {u.bot}\ndefault_avatar= <{u.default_avatar}>\ncreated_at = {u.created_at}\n"
         if isinstance(u, discord.Member):
             role = u.top_role.name
@@ -93,9 +93,9 @@ class Mod(commands.GroupCog):
 
     @commands.command(aliases=['ui2'])
     async def userinfo2(self, ctx: GuildContext, user: discord.Member | discord.User = commands.Author):
-        """Shows information from a user. Staff and Helpers only."""
+        """Shows information from a user. Staff only."""
 
-        if not check_staff(ctx.bot, 'Helper', ctx.author.id) and (ctx.author != user or ctx.channel != self.bot.channels['bot-cmds']):
+        if not check_staff(ctx.bot, 'Moderator', ctx.author.id) and (ctx.author != user or ctx.channel != self.bot.channels['bot-cmds']):
             await ctx.message.delete()
             return await ctx.send(f"{ctx.author.mention} This command can only be used in {self.bot.channels['bot-cmds'].mention} and only on yourself.", delete_after=10)
 
@@ -103,7 +103,7 @@ class Mod(commands.GroupCog):
 
         await ctx.send(embed=embed)
 
-    @is_staff_app('Helper')
+    @is_staff_app('Moderator')
     @app_commands.guild_only
     @app_commands.default_permissions(manage_nicknames=True)
     async def userinfo_ctx_menu(self, interaction: discord.Interaction, user: discord.Member):
@@ -147,7 +147,7 @@ class Mod(commands.GroupCog):
         embed.set_thumbnail(url=user.display_avatar.url)
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @is_staff_app('Helper')
+    @is_staff_app('Moderator')
     @commands.guild_only()
     @commands.command()
     async def guildinfo(self, ctx: GuildContext, invite: Optional[discord.Invite]):
@@ -256,7 +256,7 @@ class Mod(commands.GroupCog):
                     return time
             raise commands.BadArgument("Invalid channel id or time format.")
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.bot_has_permissions(manage_channels=True)
     @commands.guild_only()
     @commands.command()
@@ -269,12 +269,9 @@ class Mod(commands.GroupCog):
         The time format is identical to that used for timed kicks/bans/takehelps.
         It is not possible to set a slowmode longer than 6 hours.
 
-        Helpers in assistance channels and Staff only."""
+        Staff only."""
 
         assert channel is not None
-
-        if channel not in self.bot.assistance_channels and not check_staff(ctx.bot, "Moderator", ctx.author.id):
-            return await ctx.send("You cannot use this command outside of assistance channels.")
 
         if length > 21600:
             return await ctx.send("💢 You can't slowmode a channel for longer than 6 hours!")
@@ -292,11 +289,11 @@ class Mod(commands.GroupCog):
             msg = f"🕙 **Slowmode**: {ctx.author.mention} removed the slowmode delay in {channel.mention}"
         await self.bot.channels["mod-logs"].send(msg)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command(aliases=['clear'], extras={'examples': ['.purge #hacking-general 10 --exclude Kurisu#1234', '.purge 10', '.purge 10 --before 983086930910654594']})
     async def purge(self, ctx: GuildContext, channel: Optional[discord.TextChannel | discord.VoiceChannel | discord.Thread], limit: commands.Range[int, 1], *, flags: PurgeFlags):
-        """Clears at most a given number of messages in current channel or a channel if given. Helpers in assistance channels and Staff only.
+        """Clears at most a given number of messages in current channel or a channel if given. Staff only.
 
         **Flags**
         --before [Message] Deletes messages created before the provided message.
@@ -531,7 +528,7 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} can now embed links and attach files again.")
         await self.logs.post_action_log(ctx.author, member, 'embed', reason=reason)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command(aliases=["nohelp", "yesnthelp"])
     async def takehelp(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
@@ -542,7 +539,7 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} can no longer access the help channels.")
         await self.logs.post_action_log(ctx.author, member, 'take-help', reason=reason)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command(aliases=["yeshelp", "nonthelp"])
     async def givehelp(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
@@ -551,7 +548,7 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} can access the help channels again.")
         await self.logs.post_action_log(ctx.author, member, 'give-help', reason=reason)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command(aliases=["timenohelp", "timeyesnthelp"])
     async def timetakehelp(self, ctx: GuildContext, member: discord.Member, length: int = commands.parameter(converter=DateOrTimeToSecondsConverter), *, reason: Optional[str]):
@@ -571,7 +568,7 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} can no longer access the help channels until {yeshelp_time_string}.")
         await self.logs.post_action_log(issuer, member, 'take-help', reason=reason, until=takehelp_expiration)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command(aliases=["mutehelp"])
     async def helpmute(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
@@ -582,7 +579,7 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} can no longer speak in the help channels.")
         await self.logs.post_action_log(ctx.author, member, 'help-mute', reason=reason)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command(aliases=["timemutehelp"])
     async def timehelpmute(self, ctx: GuildContext, member: discord.Member, length: int = commands.parameter(converter=DateOrTimeToSecondsConverter), *, reason: Optional[str]):
@@ -599,16 +596,16 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} can no longer speak in the help channels.")
         await self.logs.post_action_log(ctx.author, member, 'help-mute', reason=reason, until=helpmute_expiration)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command()
     async def helpunmute(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
-        """Restores speak access to help channels. Helpers+ only."""
+        """Restores speak access to help channels. Moderator+ only."""
         await self.restrictions.remove_restriction(member, Restriction.HelpMute)
         await ctx.send(f"{member.mention} can now speak in the help channels again.")
         await self.logs.post_action_log(ctx.author, member, 'help-unmute', reason=reason)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command(aliases=["mutedev"])
     async def devmute(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
@@ -619,7 +616,7 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} can no longer speak in the dev channels.")
         await self.logs.post_action_log(ctx.author, member, 'dev-mute', reason=reason)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command(aliases=["timemutedev"])
     async def timedevmute(self, ctx: GuildContext, member: discord.Member, length: int = commands.parameter(converter=DateOrTimeToSecondsConverter), *, reason: Optional[str]):
@@ -636,11 +633,11 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} can no longer speak in the dev channels until {devmute_expiration}.")
         await self.logs.post_action_log(ctx.author, member, 'dev-mute', reason=reason, until=devmute_expiration)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command()
     async def devunmute(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
-        """Restores speak access to dev channels. Helpers+ only."""
+        """Restores speak access to dev channels. Moderator+ only."""
         await self.restrictions.remove_restriction(member, Restriction.DevMute)
         await ctx.send(f"{member.mention} can now speak in the dev channels again.")
         await self.logs.post_action_log(ctx.author, member, 'dev-unmute', reason=reason)
@@ -665,7 +662,7 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} can react to messages again.")
         await self.logs.post_action_log(ctx.author, member, 'give-react', reason=reason)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command()
     async def takesmallhelp(self, ctx: GuildContext, members: commands.Greedy[discord.Member]):
@@ -679,7 +676,7 @@ class Mod(commands.GroupCog):
         msg = f"⭕️ **Small help access revoked**: {ctx.author.mention} revoked access to small help channel from {', '.join(f'{x.mention} | {x}'for x in members)}"
         await self.bot.channels['mod-logs'].send(msg)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command()
     async def givesmallhelp(self, ctx: GuildContext, members: commands.Greedy[discord.Member]):
@@ -693,7 +690,7 @@ class Mod(commands.GroupCog):
         msg = f"⭕️ **Small help access granted**: {ctx.author.mention} granted access to small help channel to {', '.join(f'{x.mention} | {x}'for x in members)}"
         await self.bot.channels['mod-logs'].send(msg)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command()
     async def probate(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
@@ -704,7 +701,7 @@ class Mod(commands.GroupCog):
         await ctx.send(f"{member.mention} is now in probation.")
         await self.logs.post_action_log(ctx.author, member, 'probate', reason=reason)
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command()
     async def unprobate(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
@@ -835,7 +832,7 @@ class Mod(commands.GroupCog):
         await self.configuration.set_nofilter_channel(channel, True)
         await self.bot.channels['mod-logs'].send(f"🚫 **Filter**: {ctx.author.mention} removed no filter from {channel.mention}")
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command()
     async def approve(self, ctx: GuildContext, alias: str, invite: discord.Invite, times: commands.Range[int, 1] = 1):
@@ -852,7 +849,7 @@ class Mod(commands.GroupCog):
         await ctx.send(f"Approved an invite to {invite.guild}({code}) for posting {times} times")
         await self.bot.channels['mod-logs'].send(f"⭕ **Approved**: {ctx.author.mention} approved server {invite.guild}({code}) to be posted {times} times")
 
-    @is_staff("Helper")
+    @is_staff("Moderator")
     @commands.guild_only()
     @commands.command(aliases=['ci'])
     async def channelinfo(self, ctx: GuildContext, channel: discord.TextChannel = commands.CurrentChannel):

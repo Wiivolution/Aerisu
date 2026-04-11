@@ -52,7 +52,6 @@ cogs = (
     'cogs.logs',
     'cogs.loop',
     'cogs.memes',
-    'cogs.helperlist',
     'cogs.imgconvert',
     'cogs.luma3dsdumpconvert',
     'cogs.mod_staff',

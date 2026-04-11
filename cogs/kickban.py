@@ -38,7 +38,7 @@ class KickBan(commands.GroupCog):
         return True
 
     async def meme(self, beaner: discord.Member, beaned: discord.Member, action: str, channel: discord.TextChannel, reason: Optional[str] = None):
-        await channel.send(f"Seriously? What makes you think it's okay to try and {action} another staff or helper like that?")
+        await channel.send(f"Seriously? What makes you think it's okay to try and {action} another staff like that?")
         msg = f"{beaner.mention} attempted to {action} {beaned.mention}|{beaned} in {channel.mention} "
         if reason:
             msg += f"for the reason {reason}"

@@ -86,30 +86,6 @@ class ModStaff(commands.Cog):
         msg = f"🕵 **Unsudo**: {author.mention} | {author}"
         await self.bot.channels['mod-logs'].send(msg)
 
-    @is_staff("Moderator")
-    @commands.guild_only()
-    @commands.command(hidden=True)
-    async def updatestaff(self, ctx: GuildContext):
-        """Updates the staff list based on staff member in the server."""
-        removed: list[str] = []
-        for user_id in list(self.configuration.staff.keys()):
-            if ctx.guild.get_member(user_id) is None:
-                staff_member = OptionalMember(id=user_id)
-                await self.configuration.delete_staff(staff_member)
-                removed.append(str(user_id))
-        for user_id in list(self.configuration.helpers.keys()):
-            if ctx.guild.get_member(user_id) is None:
-                helper = OptionalMember(id=user_id)
-                await self.bot.configuration.delete_helper(helper)
-                removed.append(str(user_id))
-        if not removed:
-            await ctx.send("No staff members removed.")
-        else:
-            msg = f"Updated staff list. Removed {', '.join(removed)}."
-            await ctx.send(msg)
-            mod_msg = f"🛠 **Updated Staff list**: {ctx.author.mention} updated the staff list.\n:pencil: __Users removed__: {', '.join(removed)}"
-            await self.bot.channels['mod-logs'].send(mod_msg)
-
     @commands.command()
     async def liststaff(self, ctx: GuildContext):
         """List staff members per rank."""

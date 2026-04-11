@@ -96,10 +96,6 @@ Staff instruction is to be followed; refusal to do so may result in moderation a
 **Please do not send a direct message unless asked.
 Please contact <@!1464770820797632699> if you have concerns about moderation.**\n"""
 
-        self.helper_list = f"""🤝 __*Helper List*__
-**Please do not send a direct message unless asked.
-Please contact <@!1464770820797632699> if you have concerns about moderation.**\n"""
-
         self.nickname_policy = """🏷️ __*Username/Nickname and Avatar policy*__
 Usernames must begin with at least one alphanumeric character and are to be primarily alphanumeric, to keep them easy to tag and read.
 Excessively long usernames are not acceptable. Usernames and avatars that are annoying, offensive, inappropriate ("nsfw"), and/or disruptive to others are also not allowed.
@@ -137,23 +133,6 @@ https://discord.gg/wxfWSmyZ3x"""
         await channel.send(self.staff_action)
         staff = [f"<@{staff}>" for staff in self.configuration.staff]
         await channel.send(self.mod_list + '\n'.join(staff))
-        helpers = self.configuration.helpers
-        helpers_3ds = [f"<@{helper}>" for helper, console in helpers.items() if console == '3DS']
-        helpers_wiiu = [f"<@{helper}>" for helper, console in helpers.items() if console == 'WiiU']
-        helpers_legacy = [f"<@{helper}>" for helper, console in helpers.items() if console == 'Legacy']
-        helpers_switch = [f"<@{helper}>" for helper, console in helpers.items() if console == 'Switch']
-        helpers_wii = [f"<@{helper}>" for helper, console in helpers.items() if console == 'Wii']
-        helpers_hardware = [f"<@{helper}>" for helper, console in helpers.items() if console == 'Hardware']
-        '''
-        Stubbed for now as helpers are not used
-        await channel.send(self.helper_list)
-        await channel.send(f"{str(self.logo_3ds)}  Nintendo 3DS\n" + '\n'.join(helpers_3ds))
-        await channel.send(f"{str(self.logo_wiiu)}  Wii U\n" + '\n'.join(helpers_wiiu))
-        await channel.send(f"{str(self.logo_switch)}  Nintendo Switch\n" + '\n'.join(helpers_switch))
-        await channel.send(f"{str(self.logo_wii)}  Nintendo Wii\n" + '\n'.join(helpers_wii))
-        await channel.send(f"{str(self.logo_legacy)}  Legacy\n" + '\n'.join(helpers_legacy))
-        await channel.send(f"{str(self.logo_hardware)}  Hardware\n" + '\n'.join(helpers_hardware))
-        '''
         await channel.send(self.nickname_policy)
         await channel.send(self.useful_commands)
         await channel.send(self.extra)

@@ -34,11 +34,11 @@ class ModWarn(commands.GroupCog):
             raise commands.NoPrivateMessage()
         return True
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.guild_only()
     @commands.command()
     async def warn(self, ctx: GuildContext, member: Optional[discord.Member | discord.User], *, reason: str):
-        """Warn a user. Staff and Helpers only."""
+        """Warn a user. Staff only."""
         issuer = ctx.author
         channel = ctx.channel
 
@@ -76,10 +76,10 @@ class ModWarn(commands.GroupCog):
             msg += f"\n🖊️ __Message__: {message}"
         await self.bot.channels['mod-logs'].send(msg)
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.command()
     async def softwarn(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
-        """Warn a user without automated action. Staff and Helpers only."""
+        """Warn a user without automated action. Staff only."""
         issuer = ctx.author
         channel = ctx.channel
 
@@ -136,11 +136,11 @@ class ModWarn(commands.GroupCog):
             msg += "\n✏️ __Reason__: " + reason
         await self.bot.channels['mod-logs'].send(msg)
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.guild_only()
     @commands.command()
     async def pinwarn(self, ctx: GuildContext, member: Optional[discord.Member | discord.User], *, reason: str):
-        """Warn a user with a pinned warn. Staff and Helpers only."""
+        """Warn a user with a pinned warn. Staff only."""
         issuer = ctx.author
         channel = ctx.channel
 
@@ -180,10 +180,10 @@ class ModWarn(commands.GroupCog):
 
     @commands.hybrid_command()
     async def listwarns(self, ctx: KurisuContext, member: discord.Member | discord.User = commands.Author):
-        """List warns for a user. Helpers+ only for checking others."""
+        """List warns for a user. Moderator+ only for checking others."""
         issuer = ctx.author
-        if not check_staff(ctx.bot, "Helper", ctx.author.id) and member != issuer:
-            msg = f"{issuer.mention} Using this command on others is limited to Staff and Helpers."
+        if not check_staff(ctx.bot, "Moderator", ctx.author.id) and member != issuer:
+            msg = f"{issuer.mention} Using this command on others is limited to Staff."
             await ctx.send(msg)
             return
         db_channel = await self.configuration.get_channel(ctx.channel.id)
@@ -297,7 +297,7 @@ class ModWarn(commands.GroupCog):
     @commands.max_concurrency(1, commands.BucketType.guild)
     @commands.hybrid_command()
     async def managewarns(self, ctx: GuildContext, user: discord.Member | discord.User):
-        """Shows information of user along with warn stuff. Staff and Helpers only."""
+        """Shows information of user along with warn stuff. Staff only."""
         warn_list = []
         async with aclosing(self.warns.get_warnings(user)) as warns:
             async for w in warns:

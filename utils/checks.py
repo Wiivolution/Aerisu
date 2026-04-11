@@ -37,10 +37,7 @@ def is_staff_app(role: str):
 def check_staff(bot: 'Kurisu', role: str, user_id: int) -> bool:
     position = bot.configuration.staff.get(user_id)
     if position is None:
-        if bot.configuration.helpers.get(user_id):
-            position = StaffRank.Helper
-        else:
-            return False
+        return False
     return position <= StaffRank[role]
 
 
@@ -48,7 +45,7 @@ async def check_bot_or_staff(ctx: commands.Context | discord.Interaction, target
     bot: 'Kurisu' = ctx.bot if isinstance(ctx, commands.Context) else ctx.client
     if target.bot:
         who = "a bot"
-    elif check_staff(bot, "Helper", target.id):
+    elif check_staff(bot, "Moderator", target.id):
         who = "another staffer"
     else:
         return False

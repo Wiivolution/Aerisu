@@ -143,10 +143,10 @@ class Lockdown(commands.Cog):
             msg = f"🔒 **Lockdown**: {ctx.author.mention} locked down channels | {author}\n📝 __Channels__: {', '.join(c.mention for c in locked_down)}"
             await self.bot.channels['mod-logs'].send(msg)
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.command()
     async def softlock(self, ctx: GuildContext, channels: commands.Greedy[discord.TextChannel | discord.VoiceChannel]):
-        """Lock message sending in the channel, without the "disciplinary action" note. Staff and Helpers only."""
+        """Lock message sending in the channel, without the "disciplinary action" note. Staff only."""
 
         if self.locking_down:
             return await ctx.send("The bot is already locking down channels.")
@@ -161,12 +161,7 @@ class Lockdown(commands.Cog):
             else:
                 channels.append(ctx.channel)
 
-        is_helper = True
-
-        if is_helper and any(c not in self.bot.assistance_channels for c in channels):
-            return await ctx.send("You can only lock assistance channels.")
-
-        role = self.bot.roles['bot-dev'] if is_helper else self.bot.roles['Staff']
+        role = self.bot.roles['Staff']
 
         locked_down = await self.lockdown_channels(ctx, channels=channels, level=1, top_role=role)
         self.locking_down = False
@@ -175,10 +170,10 @@ class Lockdown(commands.Cog):
             msg = f"🔒 **Lockdown**: {ctx.author.mention} locked down channels | {author}\n📝 __Channels__: {', '.join(c.mention for c in locked_down)}"
             await self.bot.channels['mod-logs'].send(msg)
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.command()
     async def unlock(self, ctx: GuildContext, channels: commands.Greedy[discord.TextChannel | discord.VoiceChannel]):
-        """Unlock message sending in the channel. Staff only and Helpers only."""
+        """Unlock message sending in the channel. Staff only."""
         author = ctx.author
 
         if not channels:

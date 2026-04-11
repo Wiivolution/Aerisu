@@ -149,7 +149,7 @@ class Extras(commands.GroupCog):
     async def aerisu(self, ctx: KurisuContext):
         """About Aerisu"""
         embed = discord.Embed(title="Aerisu", color=discord.Color.green())
-        embed.set_author(name=f"Maintained by {self.bot.guild.name} helpers and staff")
+        embed.set_author(name=f"Maintained by {self.bot.guild.name} staff")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/1448892465888362680/dcf6a8fdcc07e37b069725ec036db706.webp?size=1024")
         embed.url = "https://github.com/Aeplet/Aerisu"
         embed.description = f"Aerisu, the {self.bot.guild.name} Discord bot!"
@@ -435,7 +435,7 @@ class Extras(commands.GroupCog):
         if error := self.check_message(message, ctx.author):
             return await ctx.send(error, delete_after=10)
         mention_author = any(ctx.message.mentions)
-        ref_author = ref_author if check_staff(ctx.bot, 'Helper', ctx.author.id) else True
+        ref_author = ref_author if check_staff(ctx.bot, 'Moderator', ctx.author.id) else True
         embed, file = await self.create_ref(message, ctx.author, ref_text, ref_image, ref_author)
 
         if embed is None:
@@ -564,10 +564,10 @@ class Extras(commands.GroupCog):
         else:
             await interaction.response.send_message("This tag doesn't exist!", ephemeral=True)
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @tag.command(name='create')
     async def create_tag(self, ctx: KurisuContext, title: str, *, content: str):
-        """Creates a tag. Max content size is 2000 characters. Helpers+ only."""
+        """Creates a tag. Max content size is 2000 characters. Moderator+ only."""
         if self.extras.tags.get(title):
             return await ctx.send("This tag already exists!")
         if title in self.banned_tag_names:
@@ -580,10 +580,10 @@ class Extras(commands.GroupCog):
         else:
             await ctx.send("Failed to create tag")
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @tag.command(name='add_alias')
     async def add_alias(self, ctx: KurisuContext, tag_name: str, *, alias: str):
-        """Creates an alias for a tag. Helpers+ only."""
+        """Creates an alias for a tag. Moderator+ only."""
         if not (tag := self.extras.tags.get(tag_name)):
             return await ctx.send("This tag doesn't exists!")
         if self.extras.tags.get(alias):
@@ -594,10 +594,10 @@ class Extras(commands.GroupCog):
         await self.extras.add_tag_alias(tag, alias)
         await ctx.send(f"Added alias `{alias}` to tag {tag.title}.")
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @tag.command(name='delete_alias')
     async def delete_alias(self, ctx: KurisuContext, alias: str):
-        """Deletes an alias for a tag. Helpers+ only."""
+        """Deletes an alias for a tag. Moderator+ only."""
         if not (tag := self.extras.tags.get(alias)):
             return await ctx.send("This alias doesn't exists!")
         if tag.title == alias:
@@ -646,16 +646,16 @@ class Extras(commands.GroupCog):
         else:
             await ctx.send("There are no tags.")
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @tag.command(name='edit')
     async def edit_tag(self, ctx: KurisuContext, tag_name: str, *, content: str):
-        """Edits a tag. Helpers+ only."""
+        """Edits a tag. Moderator+ only."""
         if not self.extras.tags.get(tag_name):
             return await ctx.send("This tag doesn't exists!")
         if len(content) > 2000:
             return await ctx.send("A tag contents can't be bigger than 2000 characters.")
         # if tag.author != ctx.author.id:
-        #     if await check_staff_id('Helper', ctx.author.id):
+        #     if await check_staff_id('Moderator', ctx.author.id):
         #         await crud.change_tag_ownership(tag_name, ctx.author.id)
         #     else:
         #         return await ctx.send("You can't edit a tag that isn't yours.")
@@ -665,13 +665,13 @@ class Extras(commands.GroupCog):
         else:
             await ctx.send("Failed to edit tag.")
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @tag.command(name='delete')
     async def delete_tag(self, ctx: KurisuContext, *, tag_name: str):
-        """Deletes a tag. Helpers+ only."""
+        """Deletes a tag. Moderator+ only."""
         if not self.extras.tags.get(tag_name):
             return await ctx.send("This tag doesn't exists!")
-        # if tag.author != ctx.author.id and not (await check_staff_id('Helper', ctx.author.id)):
+        # if tag.author != ctx.author.id and not (await check_staff_id('Moderator', ctx.author.id)):
         #     return await ctx.send("You can't delete a tag that isn't yours.")
         await self.extras.delete_tag(tag_name)
         await ctx.send("Tag deleted successfully.")
@@ -754,7 +754,7 @@ class Extras(commands.GroupCog):
         await ctx.message.delete()
         if not isinstance(ctx.channel, discord.Thread):
             return await ctx.send("You can only close threads.", delete_after=10)
-        if ctx.channel.owner is not ctx.author and not check_staff(ctx.bot, 'Helper', ctx.author.id):
+        if ctx.channel.owner is not ctx.author and not check_staff(ctx.bot, 'Moderator', ctx.author.id):
             return await ctx.send("Only the thread owner or staff can close a thread.", delete_after=10)
         await ctx.send("Thread has been marked as solved.")
         await ctx.channel.edit(archived=True, locked=True)

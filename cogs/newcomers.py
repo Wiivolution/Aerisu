@@ -74,7 +74,7 @@ class Newcomers(commands.Cog):
         active_text = f'**active**. ✅\nTo deactivate it, use `.autoprobate {" | ".join(self.off_aliases)}`.'
         await ctx.send(f'🔨 Auto-probation is {active_text if self.bot.configuration.auto_probation else inactive_text}')
 
-    @is_staff('Helper')
+    @is_staff('Moderator')
     @commands.group(name="autoprobate", aliases=['autoprobation'], invoke_without_command=True, case_insensitive=True)
     async def autoprobate_cmd(self, ctx: GuildContext):
         """
