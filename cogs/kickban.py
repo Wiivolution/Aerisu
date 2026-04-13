@@ -63,7 +63,7 @@ class KickBan(commands.GroupCog):
         except discord.errors.Forbidden:
             await ctx.send("💢 I don't have permission to do this.")
             return
-        await ctx.send(f"{member} is now gone. 👌")
+        await ctx.send(f"User {member.id} | {member.mention} is now gone. 👌")
         await self.bot.logs.post_action_log(ctx.author, member, 'kick', reason=reason)
 
     @is_staff("Moderator")
@@ -91,7 +91,7 @@ class KickBan(commands.GroupCog):
     @commands.command(name="ban", aliases=["yeet"])
     async def ban_member(self, ctx: GuildContext, member: discord.Member | discord.User, days: Optional[Literal[0, 1, 2, 3, 4, 5, 6, 7]] = 0, *, reason: Optional[str] = None):
         """Bans a user from the server. Moderator+ only. Optional: [days] Specify up to 7 days of messages to delete."""
-        success_list = [f"{member} is now b&. 👍"]
+        success_list = [f"User {member.id} | {member.mention} is now b&. 👍"]
         if await check_bot_or_staff(ctx, member, "ban"):
             return
 
@@ -158,7 +158,7 @@ class KickBan(commands.GroupCog):
                 return
 
             await self.restrictions.add_restriction(member, Restriction.Ban, reason, end_date=unban_time)
-            await interaction.response.send_message(f"{member} is now b& until {unban_time_string}. 👍" + ("\nFailed to send DM message" if not msg_send else ""))
+            await interaction.response.send_message(f"User {member.id} | {member.mention} is now b& until {unban_time_string}. 👍" + ("\nFailed to send DM message" if not msg_send else ""))
         else:
             unban_time = None
             msg += "\n\nThis ban does not expire."
@@ -170,7 +170,7 @@ class KickBan(commands.GroupCog):
                 return
 
             await self.restrictions.remove_restriction(member, Restriction.Ban)
-            await interaction.response.send_message(f"{member} is now b&. 👍" + ("\nFailed to send DM message" if not msg_send else ""))
+            await interaction.response.send_message(f"User {member.id} | {member.mention} is now b&. 👍" + ("\nFailed to send DM message" if not msg_send else ""))
         await self.bot.logs.post_action_log(interaction.user, member, 'ban', reason=reason, until=unban_time)
 
     @commands.bot_has_permissions(ban_members=True)
@@ -203,7 +203,7 @@ class KickBan(commands.GroupCog):
             return
 
         await self.restrictions.remove_restriction(member, Restriction.Ban)
-        await ctx.send(f"{member} is now b&. 👍")
+        await ctx.send(f"User {member.id} | {member.mention} is now b&. 👍")
         await self.bot.logs.post_action_log(ctx.author, member, 'silentban', reason=reason)
 
     @is_staff("Moderator")
@@ -235,7 +235,7 @@ class KickBan(commands.GroupCog):
             await ctx.send("💢 I don't have permission to do this.")
             return
 
-        await ctx.send(f"{member} is now b& until {unban_time_string}. 👍")
+        await ctx.send(f"User {member.id} | {member.mention} is now b& until {unban_time_string}. 👍")
         await self.bot.logs.post_action_log(ctx.author, member, 'timeban', reason=reason, until=unban_time)
 
     @is_staff("Moderator")
@@ -255,7 +255,7 @@ class KickBan(commands.GroupCog):
 
         await self.restrictions.add_softban(member, ctx.author, reason)
 
-        await ctx.send(f"{member} is now b&. 👍")
+        await ctx.send(f"User {member.id} | {member.mention} is now b&. 👍")
         await self.bot.logs.post_action_log(ctx.author, member, 'softban', reason=reason)
 
     @is_staff("Moderator")
@@ -291,7 +291,7 @@ class KickBan(commands.GroupCog):
         await send_dm_message(member, ban_msg)
         reason = "Linking scamming site"
         await member.ban(reason=reason, delete_message_days=1)
-        await ctx.send(f"{member} is now b&. 👍")
+        await ctx.send(f"User {member.id} | {member.mention} is now b&. 👍")
         await self.bot.logs.post_action_log(ctx.author, member, 'ban', reason=reason)
 
     @is_staff("Moderator")
