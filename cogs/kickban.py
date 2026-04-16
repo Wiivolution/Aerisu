@@ -101,7 +101,7 @@ class KickBan(commands.GroupCog):
             if reason:
                 msg += " The given reason is: " + reason
             msg += "\n\nThis ban does not expire."
-            msg += "\n\nIf you would like to appeal your ban, join the [appeals server](https://discord.gg/3gp4xJkKdx) and DM <@1464770820797632699>."
+            msg += "\n\nIf you would like to appeal your ban, add our ModMail bot to your apps (click on add app on <@1464770820797632699>, or use [this link](https://discord.com/oauth2/authorize?client_id=1464770820797632699) to do so), then DM it."
             await send_dm_message(member, msg, ctx)
 
         try:
@@ -141,7 +141,7 @@ class KickBan(commands.GroupCog):
         msg = f"You were banned from {interaction.guild.name}."
         if reason:
             msg += " The given reason is: " + reason
-        msg += "\n\nIf you would like to appeal your ban, join the [appeals server](https://discord.gg/3gp4xJkKdx) and DM <@1464770820797632699>."
+        msg += "\n\nIf you would like to appeal your ban, add our ModMail bot to your apps (click on add app on <@1464770820797632699>, or use [this link](https://discord.com/oauth2/authorize?client_id=1464770820797632699) to do so), then DM it."
 
         if duration is not None:
             timestamp = datetime.datetime.now(self.bot.tz)
@@ -227,7 +227,7 @@ class KickBan(commands.GroupCog):
             if reason:
                 msg += " The given reason is: " + reason
             msg += f"\n\nThis ban lasts until {unban_time_string}."
-            msg += "\n\nIf you would like to appeal your ban, join the [appeals server](https://discord.gg/3gp4xJkKdx) and DM <@1464770820797632699>."
+            msg += "\n\nIf you would like to appeal your ban, add our ModMail bot to your apps (click on add app on <@1464770820797632699>, or use [this link](https://discord.com/oauth2/authorize?client_id=1464770820797632699) to do so), then DM it."
             msg += "\nPlease note: age-based timebans are not appealable, as minimum age is a Discord ToS/legal requirement."
             await send_dm_message(member, msg, ctx)
         try:
@@ -288,7 +288,7 @@ class KickBan(commands.GroupCog):
             await self.filters.add_filtered_word(site, FilterKind.ScammingSite)
             await self.bot.channels['mod-logs'].send(f"🆕 **Added**: {ctx.author.mention} added `{site}` to the word filter!")
         ban_msg = (f"You have been banned from {ctx.guild.name} for linking scamming sites in the server."
-                   "If/when you have secured your account, contact Aep on discord to appeal.")
+                   "If/when you have secured your account, add our ModMail bot to your apps (click on add app on <@1464770820797632699>, or use [this link](https://discord.com/oauth2/authorize?client_id=1464770820797632699) to do so), then DM it.")
         await send_dm_message(member, ban_msg)
         reason = "Linking scamming site"
         await member.ban(reason=reason, delete_message_days=1)
