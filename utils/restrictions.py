@@ -96,7 +96,8 @@ class RestrictionsManager(BaseManager, db_manager=RestrictionsDatabaseManager):
         return self._softbans
 
     async def add_restriction(self, user: 'Member | User | OptionalMember', restriction: Restriction,
-                              reason: 'Optional[str]', *, end_date: 'Optional[datetime]' = None) -> int:
+                              reason: 'Optional[str]', *, end_date: 'Optional[datetime]' = None, 
+                              silent: bool = False) -> int:
         """Add a restriction to the user id."""
         assert restriction in Restriction
         assert (restriction is Restriction.Ban and end_date) or restriction is not Restriction.Ban
@@ -113,7 +114,7 @@ class RestrictionsManager(BaseManager, db_manager=RestrictionsDatabaseManager):
                                                                                         end_date=end_date,
                                                                                         alerted=False)
 
-            if restriction is not Restriction.Ban and isinstance(user, discord.Member):
+            if restriction is not Restriction.Ban and isinstance(user, discord.Member) and not silent:
                 try:
                     appeal_site = "<@1464770820797632699>"
                     await user.add_roles(self.bot.roles[restriction.value])
