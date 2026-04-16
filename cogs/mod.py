@@ -541,7 +541,7 @@ class Mod(commands.GroupCog):
 
     @is_staff("Moderator")
     @commands.guild_only()
-    @commands.command(aliases=["nohelp", "yesnthelp"])
+    @commands.command(aliases=["silentnohelp", "silentyesnthelp"])
     async def silenttakehelp(self, ctx: GuildContext, member: discord.Member | discord.User, *, reason: Optional[str]):
         """Remove access to the assistance channels, silneltly Staff and Helpers only."""
         if await check_bot_or_staff(ctx, member, "takehelp"):
