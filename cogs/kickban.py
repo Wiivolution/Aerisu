@@ -79,7 +79,8 @@ class KickBan(commands.GroupCog):
         msg += "\n\nYou are able to rejoin the server, but please secure your account and consider adding two-factor authentication."
         await send_dm_message(member, msg, ctx)
         try:
-            await member.kick(reason=reason)
+            await ctx.guild.ban(member, reason=reason, delete_message_days=1)
+            await ctx.guild.unban(member)
         except discord.errors.Forbidden:
             await ctx.send("💢 I don't have permission to do this.")
             return
