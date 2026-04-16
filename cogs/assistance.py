@@ -253,6 +253,13 @@ class Assistance(commands.GroupCog):
         """Reminds user where they are. (4) Moderator+ only"""
         await self.send_channel_warn(ctx, self.bot.channels['general'])
 
+    @is_staff('Moderator')
+    @commands.guild_only()
+    @commands.command(hidden=True)
+    async def cmd(self, ctx: GuildContext):
+        """Reminds user where they are. (4) Moderator+ only"""
+        await self.send_channel_warn(ctx, self.bot.channels['bot-cmds'])
+
     @commands.guild_only()
     @commands.command(hidden=True)
     async def pretendo(self, ctx: GuildContext):
