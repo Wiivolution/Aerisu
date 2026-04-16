@@ -113,11 +113,11 @@ class RestrictionsManager(BaseManager, db_manager=RestrictionsDatabaseManager):
                                                                                         type=restriction.value,
                                                                                         end_date=end_date,
                                                                                         alerted=False)
-
+            
+            await user.add_roles(self.bot.roles[restriction.value])
             if restriction is not Restriction.Ban and isinstance(user, discord.Member) and not silent:
                 try:
                     appeal_site = "<@1464770820797632699>"
-                    await user.add_roles(self.bot.roles[restriction.value])
                     msg_user = messages[restriction]
                     if reason:
                         msg_user += " The given reason is: " + reason
