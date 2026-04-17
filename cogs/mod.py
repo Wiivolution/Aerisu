@@ -149,7 +149,7 @@ class Mod(commands.GroupCog):
 
     @is_staff_app('Moderator')
     @commands.guild_only()
-    @commands.command()
+    @commands.command(name="guildinfo", aliases=["serverinfo"])
     async def guildinfo(self, ctx: GuildContext, invite: Optional[discord.Invite]):
         if not invite:
             guild = ctx.guild
