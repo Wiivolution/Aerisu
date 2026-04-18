@@ -188,7 +188,7 @@ class Assistance(commands.GroupCog):
         view.message = await ctx.send(embed=view.paginator.current(), view=view)
 
     @commands.dynamic_cooldown(KurisuCooldown(1, 30.0), commands.BucketType.channel)
-    @commands.hybrid_command()
+    @commands.hybrid_command(name="mkey", aliases=["parental"])
     async def mkey(self, ctx: KurisuContext, device: Literal['3ds', 'dsi', 'wii', 'wiiu', 'switch'], month: commands.Range[int, 1, 12], day: commands.Range[int, 1, 31], inquiry: str, device_id: Optional[str] = None):
         """
         Generate a master key for resetting parental control for given device.
