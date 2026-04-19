@@ -103,15 +103,15 @@ class UserLogManager(BaseManager):
         else:
             msg.append('\N{PENCIL} __Reason__: No reason provided')
         msg_final = '\n'.join(msg)
-        await self.bot.channels['mod-logs'].send(msg_final)
+        await self.bot.channels['mod-logs'].send(msg_final, silent=True, silent=True)
         if 'ban' in kind or 'kick' in kind:
-            await self.bot.channels['server-logs'].send(msg_final)
+            await self.bot.channels['server-logs'].send(msg_final, silent=True)
 
     async def post_message_log(self, title: str, action: str, log: str):
-        return await self.bot.channels['message-logs'].send(view=LogLayout(title, action, log), suppress_embeds=True, )
+        return await self.bot.channels['message-logs'].send(view=LogLayout(title, action, log), suppress_embeds=True, silent=True)
 
     async def post_watch_log(self, message: discord.Message, is_edit: bool):
-        return await self.bot.channels['watch-logs'].send(view=WatchLogLayout(message, is_edit))
+        return await self.bot.channels['watch-logs'].send(view=WatchLogLayout(message, is_edit), silent=True)
 
     async def post_upload_log(self, message: discord.Message):
-        return await self.bot.channels['upload-logs'].send(view=UploadLogLayout(message))
+        return await self.bot.channels['upload-logs'].send(view=UploadLogLayout(message), silent=True)

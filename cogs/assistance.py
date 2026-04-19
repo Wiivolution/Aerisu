@@ -119,9 +119,9 @@ class Assistance(commands.GroupCog):
         await asyncio.sleep(1)  # Fix for discord race condition(?)
         await channel.set_permissions(helpee, read_messages=True)
         await channel.send(f"{helpee.mention}, come here for help.")
-        await self.bot.channels['mod-logs'].send(f"⭕️ **Small help access granted**: {ctx.author.mention} granted access to small help channel to {helpee.mention}")
+        await self.bot.channels['mod-logs'].send(f"⭕️ **Small help access granted**: {ctx.author.mention} granted access to small help channel to {helpee.mention}", silent=True)
         msg = f"🆕 **Small help channel created**: {ctx.author.mention} created small help channel {channel.mention} | {channel.name} ({channel.id})"
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
         await ctx.send(f"Created small help {channel.mention}.")
 
     @is_staff('Moderator')

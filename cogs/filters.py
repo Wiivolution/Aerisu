@@ -49,7 +49,7 @@ class Filter(commands.Cog):
         if discord.utils.get(self.filters.filtered_words, word=word):
             return await ctx.send("This word is already in the filter!")
         await self.filters.add_filtered_word(word, filter_kind)
-        await self.bot.channels['mod-logs'].send(f"🆕 **Added**: {ctx.author.mention} added `{word}` to the word filter!")
+        await self.bot.channels['mod-logs'].send(f"🆕 **Added**: {ctx.author.mention} added `{word}` to the word filter!", silent=True)
         await ctx.send("Successfully added word to word filter")
 
     @wordfilter.command(name='list')
@@ -88,7 +88,7 @@ class Filter(commands.Cog):
                 deleted.append(word)
         if deleted:
             await ctx.send(f"Deleted words `{'`,`'.join(deleted)}` succesfully!")
-            await self.bot.channels['mod-logs'].send(f"⭕ **Deleted**: {ctx.author.mention} deleted words `{'`,`'.join(deleted)}` from the filter!")
+            await self.bot.channels['mod-logs'].send(f"⭕ **Deleted**: {ctx.author.mention} deleted words `{'`,`'.join(deleted)}` from the filter!", silent=True)
         else:
             await ctx.send("No word was deleted from the filter!")
 
@@ -203,7 +203,7 @@ class Filter(commands.Cog):
         res = await self.filters.add_levenshtein_word(word, threshold, filter_kind)
         if not res:
             return await ctx.send("Failed to add word to levenshtein filter.")
-        await self.bot.channels['mod-logs'].send(f"🆕 **Added**: {ctx.author.mention} added `{word}` to the Levenshtein filter!")
+        await self.bot.channels['mod-logs'].send(f"🆕 **Added**: {ctx.author.mention} added `{word}` to the Levenshtein filter!", silent=True)
         await ctx.send("Successfully added word to Levenshtein filter")
 
     @levenshteinfilter.command(name='list')
@@ -267,7 +267,7 @@ class Filter(commands.Cog):
                 deleted.append(word)
         if deleted:
             await ctx.send(f"Deleted words `{'`,`'.join(deleted)}` succesfully!")
-            await self.bot.channels['mod-logs'].send(f"⭕ **Deleted**: {ctx.author.mention} deleted words `{'`,`'.join(deleted)}` from the Levenshtein filter!")
+            await self.bot.channels['mod-logs'].send(f"⭕ **Deleted**: {ctx.author.mention} deleted words `{'`,`'.join(deleted)}` from the Levenshtein filter!", silent=True)
         else:
             await ctx.send("No word was deleted from the Levenshtein filter!")
 
@@ -329,7 +329,7 @@ class Filter(commands.Cog):
         res = await self.filters.add_approved_invite(invite, uses=-1, alias=alias)
         if not res:
             return await ctx.send("Failed to add invite to the invite whitelist!")
-        await self.bot.channels['mod-logs'].send(f"🆕 **Added**: {ctx.author.mention} added {invite.code}(`{invite.guild.name}`) to the invite whitelist!")
+        await self.bot.channels['mod-logs'].send(f"🆕 **Added**: {ctx.author.mention} added {invite.code}(`{invite.guild.name}`) to the invite whitelist!", silent=True)
         await ctx.send("Successfully added invite to whitelist")
 
     @is_staff("Moderator")
@@ -343,7 +343,7 @@ class Filter(commands.Cog):
         if not res:
             return await ctx.send("Failed to delete invite.")
         await ctx.send(f"Deleted server `{entry.alias}` from filter succesfully!")
-        await self.bot.channels['mod-logs'].send(f"⭕ **Deleted**: {ctx.author.mention} deleted server `{entry.alias}` from the invite filter!")
+        await self.bot.channels['mod-logs'].send(f"⭕ **Deleted**: {ctx.author.mention} deleted server `{entry.alias}` from the invite filter!", silent=True)
 
     @invitefilter.command(name='list')
     async def list_invites(self, ctx: KurisuContext):

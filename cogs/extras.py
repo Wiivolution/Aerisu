@@ -318,7 +318,7 @@ class Extras(commands.GroupCog):
         self.bot.pruning = True
         await self.bot.channels['mods'].send(f"Prune started in {ctx.guild.name}!")
         msg = f"👢 **Prune**: {ctx.author.mention} started a prune."
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff("Owner")
     @commands.command()

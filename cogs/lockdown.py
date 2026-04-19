@@ -114,7 +114,7 @@ class Lockdown(commands.Cog):
 
         if locked_down:
             msg = f"🔒 **Lockdown**: {ctx.author.mention} locked down channels | {author}\n📝 __Channels__: {', '.join(c.mention for c in locked_down)}"
-            await self.bot.channels['mod-logs'].send(msg)
+            await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff("Owner")
     @commands.command(aliases=['slock'])
@@ -141,7 +141,7 @@ class Lockdown(commands.Cog):
 
         if locked_down:
             msg = f"🔒 **Lockdown**: {ctx.author.mention} locked down channels | {author}\n📝 __Channels__: {', '.join(c.mention for c in locked_down)}"
-            await self.bot.channels['mod-logs'].send(msg)
+            await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff('Moderator')
     @commands.command()
@@ -168,7 +168,7 @@ class Lockdown(commands.Cog):
 
         if locked_down:
             msg = f"🔒 **Lockdown**: {ctx.author.mention} locked down channels | {author}\n📝 __Channels__: {', '.join(c.mention for c in locked_down)}"
-            await self.bot.channels['mod-logs'].send(msg)
+            await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff('Moderator')
     @commands.command()
@@ -215,7 +215,7 @@ class Lockdown(commands.Cog):
 
         if unlocked:
             msg = f"🔓 **Unlock**: {ctx.author.mention} unlocked channels | {author}\n📝 __Channels__: {', '.join(c.mention for c in unlocked)}"
-            await self.bot.channels['mod-logs'].send(msg)
+            await self.bot.channels['mod-logs'].send(msg, silent=True)
 
 
 async def setup(bot):

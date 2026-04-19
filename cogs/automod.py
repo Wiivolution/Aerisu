@@ -191,7 +191,7 @@ class AutoMod(commands.GroupCog):
             await interaction.response.send_message("Failed to set killbox status.", ephemeral=True)
             return
         await interaction.response.send_message(f"Set {channel.mention} killbox state to `{action.name}`!", ephemeral=True)
-        await self.bot.channels['mod-logs'].send(f"❗Killbox: {interaction.user} set {channel.mention} killbox status to `{action.name}`!")
+        await self.bot.channels['mod-logs'].send(f"❗Killbox: {interaction.user} set {channel.mention} killbox status to `{action.name}`!", silent=True)
 
 
 async def setup(bot):

@@ -287,7 +287,7 @@ class Mod(commands.GroupCog):
         else:
             await ctx.send(f"Slowmode has been removed for {channel.mention}.")
             msg = f"🕙 **Slowmode**: {ctx.author.mention} removed the slowmode delay in {channel.mention}"
-        await self.bot.channels["mod-logs"].send(msg)
+        await self.bot.channels["mod-logs"].send(msg, silent=True)
 
     @is_staff("Moderator")
     @commands.guild_only()
@@ -330,7 +330,7 @@ class Mod(commands.GroupCog):
             return await ctx.send(f"Deleting messages failed {exc}")
         if deleted:
             msg = f"🗑 **Cleared**: {ctx.author.mention} cleared {len(deleted)} messages in {channel.mention}"
-            await self.bot.channels['mod-logs'].send(msg)
+            await self.bot.channels['mod-logs'].send(msg, silent=True)
         else:
             await ctx.send("No messages were deleted.", delete_after=10)
 
@@ -685,7 +685,7 @@ class Mod(commands.GroupCog):
             await member.remove_roles(self.bot.roles['Small Help Access'])
         await ctx.send(f"{', '.join(x.mention for x in members)} can no longer access the small help channel.")
         msg = f"⭕️ **Small help access revoked**: {ctx.author.mention} revoked access to small help channel from {', '.join(f'{x.mention} | {x}'for x in members)}"
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff("Moderator")
     @commands.guild_only()
@@ -699,7 +699,7 @@ class Mod(commands.GroupCog):
             await member.add_roles(self.bot.roles['Small Help Access'])
         await ctx.send(f"{', '.join(x.mention for x in members)} can access the small help channel.")
         msg = f"⭕️ **Small help access granted**: {ctx.author.mention} granted access to small help channel to {', '.join(f'{x.mention} | {x}'for x in members)}"
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff("Moderator")
     @commands.guild_only()
@@ -732,7 +732,7 @@ class Mod(commands.GroupCog):
         await self.bot.configuration.add_channel(name, channel)
         self.bot.channels[name] = channel
         await ctx.send(f"Changed {name} channel to {channel.mention} | {channel.id}")
-        await self.bot.channels['mod-logs'].send(f"⚙ **Changed**: {ctx.author.mention} changed {name} channel to {channel.mention} | {channel.id}")
+        await self.bot.channels['mod-logs'].send(f"⚙ **Changed**: {ctx.author.mention} changed {name} channel to {channel.mention} | {channel.id}", silent=True)
 
     @is_staff("Owner")
     @commands.guild_only()
@@ -831,7 +831,7 @@ class Mod(commands.GroupCog):
         if channel.id in self.configuration.nofilter_list:
             return await ctx.send("This channel is already no filtered!")
         await self.configuration.set_nofilter_channel(channel, False)
-        await self.bot.channels['mod-logs'].send(f"⭕ **No filter**: {ctx.author.mention} added no filter to {channel.mention}")
+        await self.bot.channels['mod-logs'].send(f"⭕ **No filter**: {ctx.author.mention} added no filter to {channel.mention}", silent=True)
 
     @is_staff("Admin")
     @commands.guild_only()
@@ -841,7 +841,7 @@ class Mod(commands.GroupCog):
         if channel.id not in self.configuration.nofilter_list:
             return await ctx.send("This channel is already filtered!")
         await self.configuration.set_nofilter_channel(channel, True)
-        await self.bot.channels['mod-logs'].send(f"🚫 **Filter**: {ctx.author.mention} removed no filter from {channel.mention}")
+        await self.bot.channels['mod-logs'].send(f"🚫 **Filter**: {ctx.author.mention} removed no filter from {channel.mention}", silent=True)
 
     @is_staff("Moderator")
     @commands.guild_only()
@@ -858,7 +858,7 @@ class Mod(commands.GroupCog):
 
         await self.filters.add_approved_invite(invite, uses=times, alias=alias)
         await ctx.send(f"Approved an invite to {invite.guild}({code}) for posting {times} times")
-        await self.bot.channels['mod-logs'].send(f"⭕ **Approved**: {ctx.author.mention} approved server {invite.guild}({code}) to be posted {times} times")
+        await self.bot.channels['mod-logs'].send(f"⭕ **Approved**: {ctx.author.mention} approved server {invite.guild}({code}) to be posted {times} times", silent=True)
 
     @is_staff("Moderator")
     @commands.guild_only()

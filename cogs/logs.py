@@ -75,7 +75,7 @@ class Logs(commands.Cog):
             return
         # All leaves will be logged no matter what caused it. (ban, kick or just them leaving the server)
         msg = f"⬅️ **Leave**: {member.mention} | {self.bot.escape_text(member)}\n🏷 __User ID__: {member.id}"
-        await self.bot.channels['server-logs'].send(msg)
+        await self.bot.channels['server-logs'].send(msg, silent=True)
 
     @commands.Cog.listener()
     async def on_audit_log_entry_create(self, entry: discord.AuditLogEntry):
@@ -99,9 +99,9 @@ class Logs(commands.Cog):
                     if entry.reason:
                         msg += f"\n✏️ __Reason__: {entry.reason}"
                     self.bot.actions.remove("wb:" + str(target.id))
-                    await self.bot.channels['mods'].send(msg)
-                    await self.bot.channels['server-logs'].send(msg)
-                    await self.bot.channels['mod-logs'].send(msg)
+                    await self.bot.channels['mods'].send(msg, silent=True)
+                    await self.bot.channels['server-logs'].send(msg, silent=True)
+                    await self.bot.channels['mod-logs'].send(msg, silent=True)
                     return
                 # Check for automated kicks
                 elif entry.action is discord.AuditLogAction.kick and f'wk:{target.id}' in self.bot.actions:
@@ -109,8 +109,8 @@ class Logs(commands.Cog):
                     if entry.reason:
                         msg += f"\n✏️ __Reason__: {entry.reason}"
                     self.bot.actions.remove("wk:" + str(target.id))
-                    await self.bot.channels['server-logs'].send(msg)
-                    await self.bot.channels['mod-logs'].send(msg)
+                    await self.bot.channels['server-logs'].send(msg, silent=True)
+                    await self.bot.channels['mod-logs'].send(msg, silent=True)
                     return
                 else:
                     return
@@ -126,7 +126,7 @@ class Logs(commands.Cog):
         if self.restrictions.timed_restrictions.get((user.id, Restriction.Ban.value)):
             msg += "\nTimeban removed."
             await self.restrictions.remove_restriction(user, Restriction.Ban)
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @commands.Cog.listener()
     async def on_member_update(self, member_before: discord.Member, member_after: discord.Member):

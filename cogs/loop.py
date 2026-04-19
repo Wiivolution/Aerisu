@@ -132,7 +132,7 @@ class Loop(commands.Cog):
                             except discord.errors.NotFound:
                                 pass
                             msg = f"⚠️ **Ban expired**: {member.id}"
-                            await self.bot.channels['mod-logs'].send(msg)
+                            await self.bot.channels['mod-logs'].send(msg, silent=True)
                     elif not restriction.alerted:
                         warning_time_period = timedelta(minutes=30) if restriction.type is Restriction.Ban else timedelta(minutes=10)
                         warning_time = restriction.end_date - warning_time_period
@@ -151,7 +151,7 @@ class Loop(commands.Cog):
                         if member and role:
                             await member.remove_roles(role)
                         msg = f"⭕ **Timed Role Expired**: <@{timed_role.user_id}> (`{role.name if role else timed_role.role_id}`)"
-                        await self.bot.channels['mod-logs'].send(msg)
+                        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
                 for reminder_entries in list(self.extras.reminders.values()):
                     for reminder in reminder_entries:

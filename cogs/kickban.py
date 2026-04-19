@@ -268,7 +268,7 @@ class KickBan(commands.GroupCog):
         await self.restrictions.delete_softban(user)
         await ctx.send(f"{user} has been unbanned!")
         msg = f"⚠️ **Un-soft-ban**: {ctx.author.mention} un-soft-banned {self.bot.escape_text(user)}"
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff("Moderator")
     @commands.command(name="scamban")
@@ -286,7 +286,7 @@ class KickBan(commands.GroupCog):
             await ctx.send("Filtered words can't contain dashes or spaces, please add the site properly with wordfilter command.")
         else:
             await self.filters.add_filtered_word(site, FilterKind.ScammingSite)
-            await self.bot.channels['mod-logs'].send(f"🆕 **Added**: {ctx.author.mention} added `{site}` to the word filter!")
+            await self.bot.channels['mod-logs'].send(f"🆕 **Added**: {ctx.author.mention} added `{site}` to the word filter!", silent=True)
         ban_msg = (f"You have been banned from {ctx.guild.name} for linking scamming sites in the server."
                    "If/when you have secured your account, contact Aep on discord to appeal.")
         await send_dm_message(member, ban_msg)

@@ -74,7 +74,7 @@ class ModWarn(commands.GroupCog):
             msg += "\n✏️ __Reason__: " + reason
         if message:
             msg += f"\n🖊️ __Message__: {message}"
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff('Moderator')
     @commands.command()
@@ -97,7 +97,7 @@ class ModWarn(commands.GroupCog):
         msg = f"⚠️ **Warned**: {issuer.mention} softwarned {member.mention} in {channel.mention} ({self.bot.escape_text(channel)}) (warn #{count}) | {self.bot.escape_text(member)}"
         if reason is not None:
             msg += "\n✏️ __Reason__: " + reason
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff('Moderator')
     @app_commands.guild_only
@@ -134,7 +134,7 @@ class ModWarn(commands.GroupCog):
         msg = f"⚠️ **Warned**: {issuer.mention} softwarned {member.mention} {warn_number} times in {channel.mention} ({self.bot.escape_text(channel)}) (Final warn count: {count}) | {self.bot.escape_text(member)}"
         if reason is not None:
             msg += "\n✏️ __Reason__: " + reason
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff('Moderator')
     @commands.guild_only()
@@ -176,7 +176,7 @@ class ModWarn(commands.GroupCog):
             msg += "\n✏️ __Reason__: " + reason
         if message:
             msg += f"\n🖊️ __Message__: {message}"
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @commands.hybrid_command()
     async def listwarns(self, ctx: KurisuContext, member: discord.Member | discord.User = commands.Author):
@@ -236,7 +236,7 @@ class ModWarn(commands.GroupCog):
         await ctx.send(f"{src_warns} warns were copied from {src.name} to {target.name}!")
         msg = f"📎 **Copied warns**: {ctx.author.mention} copied {res} warns from {self.bot.escape_text(src.name)}"\
               f"({src}) to {self.bot.escape_text(target.name)} ({target})"
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff("Moderator")
     @commands.command()
@@ -257,7 +257,7 @@ class ModWarn(commands.GroupCog):
         await self.warns.delete_warning(warn.warn_id, ctx.author.id, reason)
         await ctx.send(f"{member.mention} {ordinal(idx)} warn has been removed.")
         msg = f"🗑 **Deleted warn**: {ctx.author.mention} removed warn {idx} from {member.mention} | {self.bot.escape_text(member)}"
-        await self.bot.channels['mod-logs'].send(msg, embed=embed)
+        await self.bot.channels['mod-logs'].send(msg, embed=embed, silent=True)
 
     @is_staff("Owner")
     @commands.command(name="delwarndb", aliases=["deldelwarn"])
@@ -278,7 +278,7 @@ class ModWarn(commands.GroupCog):
         await self.warns.delete_deleted_warning(warn.warn_id)
         await ctx.send(f"{member.mention} {ordinal(idx)} warn has been removed from the database.")
         msg = f"🗑 **Deleted warn from database**: {ctx.author.mention} removed warn {idx} from {member.mention} | {self.bot.escape_text(member)}"
-        await self.bot.channels['mod-logs'].send(msg, embed=embed)
+        await self.bot.channels['mod-logs'].send(msg, embed=embed, silent=True)
     
     @is_staff("Moderator")
     @commands.command()
@@ -290,7 +290,7 @@ class ModWarn(commands.GroupCog):
             return
         await ctx.send(f"{member.mention} no longer has any warns!")
         msg = f"🗑 **Cleared warns**: {ctx.author.mention} cleared {res} warns from {member.mention} | {self.bot.escape_text(member)}"
-        await self.bot.channels['mod-logs'].send(msg)
+        await self.bot.channels['mod-logs'].send(msg, silent=True)
 
     @is_staff("Moderator")
     @commands.guild_only()
